@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: [true, "Email is required"],
         unique: true,
         // Match's first argument is a regular expression that checks for a valid email address
         match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: [true, "Password is required"],
         minlength: [5, "Password must be at least 8 characters long"],
     },
 });

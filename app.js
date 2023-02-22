@@ -5,16 +5,21 @@ const app = express();
 const connectDB = require('./db/connect')
 const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs');
-const errorHandler = require('./middleware/errorHandler');
 
+const authentificate = require('./middleware/authentication');
+
+const errorHandler = require('./middleware/errorHandler');
+const notFound = require('./middleware/not-found');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/jobs', jobsRouter);
+app.use('/api/v1/jobs', authentificate, jobsRouter);
+
 app.use(errorHandler);
+app.use(notFound);
 
 const port = process.env.PORT || 3000;
 
