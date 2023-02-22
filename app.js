@@ -11,10 +11,17 @@ const authentificate = require('./middleware/authentication');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/not-found');
 
+const xss = require('xss-clean');
+const helmet = require('helmet');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// routes
+// Security
+app.use(helmet()); // Set security HTTP headers
+app.use(xss());   // Prevent XSS attacks
+
+// Routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authentificate, jobsRouter);
 
