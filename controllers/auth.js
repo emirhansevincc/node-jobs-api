@@ -1,20 +1,21 @@
 const User = require('../models/User');
+const { tryCatch } = require('../utils/tryCatch');
 
 const login = async (req, res, next) => {
     res.status(200).json({ msg: "Login successful" })
 };
 
-const register = async (req, res) => {
-    try {
-        const user = await User.create(req.body);
-        res.status(201).json({ user: {
+const register = tryCatch( async (req, res, next) => {
+    const user = await User.create(req.body);
+    const JWTToken = user.createJsonWebToken();
+    res.status(201).json({
+        user: {
+            id: user._id,
             name: user.name,
-        } });
-        
-    } catch (error) {
-        res.status(400).json( error.message );
-    }
-};
+        },
+        token: JWTToken
+    });
+});
 
 module.exports = {
     login,

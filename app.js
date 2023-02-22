@@ -5,12 +5,16 @@ const app = express();
 const connectDB = require('./db/connect')
 const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs');
+const errorHandler = require('./middleware/errorHandler');
+
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', jobsRouter);
+app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
 
